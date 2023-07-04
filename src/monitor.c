@@ -193,7 +193,7 @@ static int monitor (hashcat_ctx_t *hashcat_ctx)
       }
     }
 
-    if ((runtime_check == true) && (status_ctx->runtime_start > 0))
+    if ((runtime_check == true) && (status_ctx->runtime_start > 0) && status_ctx->extend_runtime == 0)
     {
       const int runtime_left = get_runtime_left (hashcat_ctx);
 

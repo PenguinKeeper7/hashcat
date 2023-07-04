@@ -2746,6 +2746,7 @@ typedef struct status_ctx
 
   bool checkpoint_shutdown;
   bool finish_shutdown;
+  bool extend_runtime;
 
   hc_thread_mutex_t mux_dispatcher;
   hc_thread_mutex_t mux_counter;

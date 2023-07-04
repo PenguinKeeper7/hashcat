@@ -2327,6 +2327,7 @@ int status_ctx_init (hashcat_ctx_t *hashcat_ctx)
 
   status_ctx->checkpoint_shutdown = false;
   status_ctx->finish_shutdown     = false;
+  status_ctx->extend_runtime      = false;
 
   status_ctx->hashcat_status_final = (hashcat_status_t *) hcmalloc (sizeof (hashcat_status_t));
 

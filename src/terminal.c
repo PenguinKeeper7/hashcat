@@ -24,6 +24,9 @@ static const size_t TERMINAL_LINE_LENGTH = 79;
 static const char *const PROMPT_ACTIVE = "[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit => ";
 static const char *const PROMPT_PAUSED = "[s]tatus [r]esume [b]ypass [c]heckpoint [f]inish [q]uit => ";
 
+static const char *const RUNTIME_PROMPT_ACTIVE = "[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit [e]xtend => ";
+static const char *const RUNTIME_PROMPT_PAUSED = "[s]tatus [r]esume [b]ypass [c]heckpoint [f]inish [q]uit [e]xtend => ";
+
 void welcome_screen (hashcat_ctx_t *hashcat_ctx, const char *version_tag)
 {
   const user_options_t *user_options = hashcat_ctx->user_options;
@@ -158,14 +161,29 @@ int setup_console ()
 void send_prompt (hashcat_ctx_t *hashcat_ctx)
 {
   const status_ctx_t *status_ctx = hashcat_ctx->status_ctx;
+  const user_options_t *user_options = hashcat_ctx->user_options;
 
   if (status_ctx->devices_status == STATUS_PAUSED)
   {
+    if(user_options->runtime > 0)
+    {
+      fprintf (stdout, "%s", RUNTIME_PROMPT_PAUSED);
+    }
+    else
+    {
     fprintf (stdout, "%s", PROMPT_PAUSED);
+    }
   }
   else
   {
+    if(user_options->runtime > 0)
+    {
+      fprintf (stdout, "%s", RUNTIME_PROMPT_ACTIVE);
+    }
+    else
+    {
     fprintf (stdout, "%s", PROMPT_ACTIVE);
+    }
   }
 
   fflush (stdout);
@@ -174,16 +192,32 @@ void send_prompt (hashcat_ctx_t *hashcat_ctx)
 void clear_prompt (hashcat_ctx_t *hashcat_ctx)
 {
   const status_ctx_t *status_ctx = hashcat_ctx->status_ctx;
+  const user_options_t *user_options = hashcat_ctx->user_options;
 
   size_t prompt_sz = 0;
 
   if (status_ctx->devices_status == STATUS_PAUSED)
   {
-    prompt_sz = strlen (PROMPT_PAUSED);
+    if(user_options->runtime > 0)
+    {
+      prompt_sz = strlen (RUNTIME_PROMPT_PAUSED);
+    }
+    else
+    {
+      prompt_sz = strlen (PROMPT_PAUSED);
+    }
+
   }
   else
   {
-    prompt_sz = strlen (PROMPT_ACTIVE);
+    if(user_options->runtime > 0)
+    {
+      prompt_sz = strlen (RUNTIME_PROMPT_ACTIVE);
+    }
+    else
+    {
+      prompt_sz = strlen (PROMPT_ACTIVE);
+    }
   }
 
   fputc ('\r', stdout);
@@ -385,6 +419,30 @@ static void keypress (hashcat_ctx_t *hashcat_ctx)
         event_log_info (hashcat_ctx, NULL);
 
         myquit (hashcat_ctx);
+
+        break;
+
+      case 'e':
+
+        if(user_options->runtime > 0)
+        {
+          event_log_info (hashcat_ctx, NULL);
+
+          status_ctx->extend_runtime ^= 1 ;
+
+          if (status_ctx->extend_runtime == true)
+          {
+            event_log_info (hashcat_ctx, "Extend enabled. Will continue past --runtime.");
+          }
+          else
+          {
+            event_log_info (hashcat_ctx, "Extend disabled. Will not continue past --runtime.");
+          }
+
+          event_log_info (hashcat_ctx, NULL);
+        }
+
+        if (quiet == false) send_prompt (hashcat_ctx);
 
         break;
 
