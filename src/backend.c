@@ -1055,8 +1055,8 @@ int choose_kernel (hashcat_ctx_t *hashcat_ctx, hc_device_param_t *device_param, 
     // - hooks can have a large influence depending on the OS.
     //   spawning threads and memory allocations take a lot of time on windows (compared to linux).
     // - the kernel execution can take shortcuts based on intermediate values
-    //   while these intermediate valus depend on input values.
-    // - if we meassure runtimes of different kernels to find out about their weightning
+    //   while these intermediate values depend on input values.
+    // - if we measure runtimes of different kernels to find out about their weightning
     //   we need to call them with real input values otherwise we miss the shortcuts inside the kernel.
     // - the problem is that these real input values could crack the hash which makes the chaos perfect.
     //
@@ -1589,7 +1589,7 @@ static void rebuild_pws_compressed_append (hc_device_param_t *device_param, cons
     const u32 dst_pw_len4_cnt = dst_pw_len4 / 4;
 
     pw_idx_dst->cnt = dst_pw_len4_cnt;
-    pw_idx_dst->len = src_len; // this is intenionally! src_len can not be dst_len, we dont want the kernel to think 0x80 is part of the password
+    pw_idx_dst->len = src_len; // this is intentionally! src_len can not be dst_len, we dont want the kernel to think 0x80 is part of the password
 
     u8 *dst = (u8 *) (tmp_pws_comp + pw_idx_dst->off);
 
@@ -3512,7 +3512,7 @@ int run_cracker (hashcat_ctx_t *hashcat_ctx, hc_device_param_t *device_param, co
     if (iconv_ctx == (iconv_t) -1) return -1;
   }
 
-  // find higest password length, this is for optimization stuff
+  // find highest password length, this is for optimization stuff
 
   u32 highest_pw_len = 0;
 
@@ -4401,14 +4401,7 @@ int backend_ctx_init (hashcat_ctx_t *hashcat_ctx)
       event_log_warning (hashcat_ctx, "Support for HIPRTC was dropped by AMD Adrenalin Edition 22.7.1 and later.");
       event_log_warning (hashcat_ctx, "This is not a hashcat problem.");
       event_log_warning (hashcat_ctx, NULL);
-      event_log_warning (hashcat_ctx, "For details please read: https://github.com/hashcat/hashcat/issues/3501");
-      event_log_warning (hashcat_ctx, NULL);
-      event_log_warning (hashcat_ctx, "In order to make HIP work, you have two options:");
-      event_log_warning (hashcat_ctx, "- Install AMD Adrenalin version 22.5.1 EXACTLY");
-      event_log_warning (hashcat_ctx, "- Read the details from the above link for other workarounds");
-      event_log_warning (hashcat_ctx, NULL);
-      event_log_warning (hashcat_ctx, "You can also just stick to OpenCL support.");
-      event_log_warning (hashcat_ctx, "To do this, just use --backend-ignore-hip option to ignore HIP.");
+      event_log_warning (hashcat_ctx, "Please install the AMD HIP SDK");
       event_log_warning (hashcat_ctx, NULL);
       #endif
     }
@@ -4592,7 +4585,7 @@ int backend_ctx_init (hashcat_ctx_t *hashcat_ctx)
       event_log_warning (hashcat_ctx, "  \"AMDGPU\" (21.50 or later) and \"ROCm\" (5.0 or later)");
       #elif defined (_WIN)
       event_log_warning (hashcat_ctx, "* AMD GPUs on Windows require this driver:");
-      event_log_warning (hashcat_ctx, "  \"AMD Adrenalin Edition\" (Adrenalin 22.5.1 exactly)");
+      event_log_warning (hashcat_ctx, "  \"AMD Adrenalin Edition\" (23.7.2 or later) and \"AMD HIP SDK\" (23.Q3 or later)");
       #endif
 
       event_log_warning (hashcat_ctx, "* Intel CPUs require this runtime:");
@@ -4936,7 +4929,7 @@ int backend_ctx_init (hashcat_ctx_t *hashcat_ctx)
     event_log_warning (hashcat_ctx, "  \"AMDGPU\" (21.50 or later) and \"ROCm\" (5.0 or later)");
     #elif defined (_WIN)
     event_log_warning (hashcat_ctx, "* AMD GPUs on Windows require this driver:");
-    event_log_warning (hashcat_ctx, "  \"AMD Adrenalin Edition\" (Adrenalin 22.5.1 exactly)");
+    event_log_warning (hashcat_ctx, "  \"AMD Adrenalin Edition\" (23.7.2 or later) and \"AMD HIP SDK\" (23.Q3 or later)");
     #endif
 
     event_log_warning (hashcat_ctx, "* Intel CPUs require this runtime:");
