@@ -1129,6 +1129,7 @@ char *status_get_time_estimated_absolute (const hashcat_ctx_t *hashcat_ctx)
 char *status_get_time_estimated_relative (const hashcat_ctx_t *hashcat_ctx)
 {
   const user_options_t *user_options = hashcat_ctx->user_options;
+  const status_ctx_t *status_ctx = hashcat_ctx->status_ctx;
 
   char *display = (char *) hcmalloc (HCBUFSIZ_TINY);
 
@@ -1167,7 +1168,14 @@ char *status_get_time_estimated_relative (const hashcat_ctx_t *hashcat_ctx)
 
       format_timer_display (tmp_left, display_left, HCBUFSIZ_TINY);
 
-      snprintf (display, HCBUFSIZ_TINY, "%s; Runtime limited: %s", tmp_display, display_left);
+      if(status_ctx->devices_status == STATUS_RUNNING && status_ctx->runtime_status == STATUS_RUNNING)
+      {
+        snprintf (display, HCBUFSIZ_TINY, "%s; Runtime limited: %s", tmp_display, display_left);
+      }
+      else
+      {
+        snprintf (display, HCBUFSIZ_TINY, "%s; Runtime limited: %s - Paused", tmp_display, display_left);
+      }
 
       hcfree (display_left);
     }
@@ -2315,6 +2323,7 @@ int status_ctx_init (hashcat_ctx_t *hashcat_ctx)
   status_ctx_t *status_ctx = hashcat_ctx->status_ctx;
 
   status_ctx->devices_status = STATUS_INIT;
+  status_ctx->runtime_status = STATUS_RUNNING;
 
   status_ctx->run_main_level1     = true;
   status_ctx->run_main_level2     = true;
@@ -2327,7 +2336,6 @@ int status_ctx_init (hashcat_ctx_t *hashcat_ctx)
 
   status_ctx->checkpoint_shutdown = false;
   status_ctx->finish_shutdown     = false;
-  status_ctx->extend_runtime      = false;
 
   status_ctx->hashcat_status_final = (hashcat_status_t *) hcmalloc (sizeof (hashcat_status_t));
 

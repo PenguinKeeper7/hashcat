@@ -2721,6 +2721,8 @@ typedef struct status_ctx
 
   u32  devices_status;
 
+  u32  runtime_status;
+
   /**
    * full (final) status snapshot
    */
@@ -2778,6 +2780,10 @@ typedef struct status_ctx
   hc_timer_t timer_paused;      // timer on current dict
 
   double  msec_paused;          // timer on current dict
+
+  hc_timer_t timer_runtime_paused;      // timer on [e]xtend runtime
+
+  double msec_runtime_paused;
 
   /**
    * read timeouts

@@ -428,15 +428,17 @@ static void keypress (hashcat_ctx_t *hashcat_ctx)
         {
           event_log_info (hashcat_ctx, NULL);
 
-          status_ctx->extend_runtime ^= 1 ;
-
-          if (status_ctx->extend_runtime == true)
+          if (status_ctx->runtime_status == STATUS_RUNNING)
           {
-            event_log_info (hashcat_ctx, "Extend enabled. Will continue past --runtime.");
+            event_log_info (hashcat_ctx, "Extend enabled. Runtime limit is paused.");
+
+            SuspendRuntime (hashcat_ctx);
           }
           else
           {
-            event_log_info (hashcat_ctx, "Extend disabled. Will not continue past --runtime.");
+            event_log_info (hashcat_ctx, "Extend disabled. Runtime limit is running.");
+
+            ResumeRuntime (hashcat_ctx);
           }
 
           event_log_info (hashcat_ctx, NULL);
