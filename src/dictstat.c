@@ -99,6 +99,9 @@ void dictstat_read (hashcat_ctx_t *hashcat_ctx)
 
   if (hashconfig->dictstat_disable == true) return;
 
+  if (user_options->rule_buf_l_chgd == true) return;
+  if (user_options->rule_buf_r_chgd == true) return;
+
   HCFILE fp;
 
   if (hc_fopen (&fp, dictstat_ctx->filename, "rb") == false)
@@ -186,6 +189,9 @@ int dictstat_write (hashcat_ctx_t *hashcat_ctx)
   if (dictstat_ctx->enabled == false) return 0;
 
   if (hashconfig->dictstat_disable == true) return 0;
+
+  if (user_options->rule_buf_l_chgd == true) return 0;
+  if (user_options->rule_buf_r_chgd == true) return 0;
 
   HCFILE fp;
 
