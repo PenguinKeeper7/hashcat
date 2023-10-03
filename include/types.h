@@ -2723,6 +2723,7 @@ typedef struct status_ctx
   bool accessible;
 
   u32  devices_status;
+  u32 runtime_status;
 
   /**
    * full (final) status snapshot
@@ -2745,6 +2746,8 @@ typedef struct status_ctx
 
   bool checkpoint_shutdown;
   bool finish_shutdown;
+
+  bool extend_runtime;
 
   hc_thread_mutex_t mux_dispatcher;
   hc_thread_mutex_t mux_counter;
@@ -2780,6 +2783,10 @@ typedef struct status_ctx
   hc_timer_t timer_paused;      // timer on current dict
 
   double  msec_paused;          // timer on current dict
+
+  hc_timer_t timer_runtime_paused;      // timer on [e]xtend runtime
+
+  double msec_runtime_paused;
 
   /**
    * read timeouts
