@@ -1035,19 +1035,6 @@ int user_options_sanity (hashcat_ctx_t *hashcat_ctx)
       return -1;
     }
 
-    if (user_options->kernel_accel < 1)
-    {
-      event_log_error (hashcat_ctx, "Invalid --kernel-accel value specified - must be greater than 0.");
-
-      return -1;
-    }
-
-    if (user_options->kernel_accel > 1024)
-    {
-      event_log_error (hashcat_ctx, "Invalid --kernel-accel value specified - must be <= 1024.");
-
-      return -1;
-    }
   }
 
   if (user_options->kernel_loops_chgd == true)
@@ -1062,20 +1049,6 @@ int user_options_sanity (hashcat_ctx_t *hashcat_ctx)
 
       return -1;
     }
-
-    if (user_options->kernel_loops < 1)
-    {
-      event_log_error (hashcat_ctx, "Invalid kernel-loops specified.");
-
-      return -1;
-    }
-
-    if (user_options->kernel_loops > KERNEL_LOOPS_MAX)
-    {
-      event_log_error (hashcat_ctx, "Invalid kernel-loops specified.");
-
-      return -1;
-    }
   }
 
   if (user_options->kernel_threads_chgd == true)
@@ -1086,20 +1059,6 @@ int user_options_sanity (hashcat_ctx_t *hashcat_ctx)
 
       event_log_warning (hashcat_ctx, "You can use --force to override this, but do not report related errors.");
       event_log_warning (hashcat_ctx, NULL);
-
-      return -1;
-    }
-
-    if (user_options->kernel_threads < 1)
-    {
-      event_log_error (hashcat_ctx, "Invalid kernel-threads specified.");
-
-      return -1;
-    }
-
-    if (user_options->kernel_threads > 1024)
-    {
-      event_log_error (hashcat_ctx, "Invalid kernel-threads specified.");
 
       return -1;
     }
